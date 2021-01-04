@@ -1,0 +1,23 @@
+{
+    "molecule_definition":
+        {
+            "nuclei_positions":[[0,0,0.70053],[0,0,0.70053]],
+            "atomic_numbers":[1, 1],
+            "number_of_electrons":2
+        },
+    "basis":
+        {
+            "type":"gaussian",
+            "params": {
+                        "alphas": [4.3448, 0.66049, 0.13669],
+                        "nuclei_positions":[[0,0,0.70053],[0,0,0.70053]],
+                        "normalization_factors":[[1, 1, 1], [1, 1, 1]]
+            }
+        },
+    "integration_config":
+        {
+            "type": "MC",
+            "n_samples": 100000000,
+            "boundaries": [-7, 7]
+        }
+}
