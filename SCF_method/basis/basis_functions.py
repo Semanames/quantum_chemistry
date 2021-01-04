@@ -4,8 +4,8 @@ from abc import ABC, abstractmethod
 
 class RootBasis(ABC):
     def __init__(self, nuclei_positions, normalization_factors, *args, **kwargs):
-        self.nuclei_positions = nuclei_positions
-        self.normalization_factors = normalization_factors
+        self.nuclei_positions = np.array(nuclei_positions)
+        self.normalization_factors = np.array(normalization_factors)
         self.args = args
         self.kwargs = kwargs
         self.basis_set = self._create_basis_set(nuclei_position=nuclei_positions,

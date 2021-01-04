@@ -9,7 +9,7 @@ class SelfConsistentFieldCalculation:
         self.T = T
         self.V_nuc = V_nuc
         self.mnls = mnls
-        self.P = P if P else np.identity(shape=T.shape)
+        self.P = P if P else np.identity(T.shape[0])
         s, U = np.linalg.eig(S)
         self.X = U@np.diag(s**(-0.5))@U.T
         self.G = self.calculate_g_matrix()
