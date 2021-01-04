@@ -1,5 +1,7 @@
 import numpy as np
 
+from SCF_method.logger import SCF_logger
+
 
 class SelfConsistentFieldCalculation:
 
@@ -56,5 +58,13 @@ class SelfConsistentFieldCalculation:
                     P[mu, nu] += 2 * self.C[mu, a] * self.C[nu, a]
         return P
 
-    def convergence_criterion(self):
-        pass
+    def convergence_criterion(self, delta):
+        if np.sqrt(np.sum((self.P - self.P_new)**2)/self.P_new.shape[0]**2) <= delta:
+            return False
+        if self.iteration >= 1000:
+            if self.iteration == 1000:
+                SCF_logger.info("SCF procedure exceeded 1000 iterations: Started averaging the P matrix")
+            self.P_new = (self.P_new + self.P)/2
+        if self.iteration == 5000:
+            SCF_logger.info("SCF procedure reached 5000 iterations: Iteration stopped")
+            return False
