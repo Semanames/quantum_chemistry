@@ -17,7 +17,7 @@
     "integration_config":
         {
             "type": "MC",
-            "n_samples": 100000,
-            "boundaries": [-7, 7]
+            "n_samples": 100000000,
+            "boundaries": [-10, 10]
         }
 }

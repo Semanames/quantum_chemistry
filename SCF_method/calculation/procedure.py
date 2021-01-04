@@ -34,7 +34,7 @@ class SelfConsistentFieldProcedure:
                                                   mnls=mnls.matrix)
         SCF_iter = iter(SCF_calc)
         SCF_logger.info("Running iterative SCF procedure")
-        while SCF_calc.convergence_criterion():
+        while SCF_calc.convergence_criterion(delta=1e-4):
             next(SCF_iter)
 
         return SCF_calc
