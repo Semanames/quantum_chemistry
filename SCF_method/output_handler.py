@@ -9,6 +9,7 @@ from SCF_method.calculation.calculation_iterator import SelfConsistentFieldCalcu
 class OutputHandlerSCF:
     """
     Handler for SelfConsistentFieldCalculation data transformation to readable and interpretable format
+    May be extended by more methods from the point of interest
     """
     def __init__(self,
                  SCF_obj: SelfConsistentFieldCalculation,

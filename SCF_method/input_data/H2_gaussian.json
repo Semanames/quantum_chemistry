@@ -17,12 +17,12 @@
     "integration_config":
         {
             "type": "MC",
-            "n_samples": 100000000,
+            "n_samples": 200000000,
             "boundaries": [-7, 7]
         },
     "convergence_config":
         {
-            "max_iteration": 5000,
+            "max_iteration": 100,
             "averaging": true,
             "delta": 1e-6
         }
