@@ -5,12 +5,13 @@ from SCF_method.logger import SCF_logger
 
 class SelfConsistentFieldCalculation:
 
-    def __init__(self, N, S, T, V_nuc, mnls, P=None):
+    def __init__(self, N, S, T, V_nuc, mnls, covergence_config, P=None):
         self.N = N
         self.S = S
         self.T = T
         self.V_nuc = V_nuc
         self.mnls = mnls
+        self.convergence_config = covergence_config
         self.P = P if P else np.identity(T.shape[0])
         s, U = np.linalg.eig(S)
         self.X = U@np.diag(s**(-0.5))@U.T
@@ -58,13 +59,15 @@ class SelfConsistentFieldCalculation:
                     P[mu, nu] += 2 * self.C[mu, a] * self.C[nu, a]
         return P
 
-    def convergence_criterion(self, delta):
-        if np.sqrt(np.sum((self.P - self.P_new)**2)/self.P_new.shape[0]**2) <= delta:
+    def convergence_criterion(self):
+        epsilon = np.sqrt(np.sum((self.P - self.P_new) ** 2) / self.P_new.shape[0] ** 2)
+        SCF_logger.info(f"Convergence factor is {epsilon}")
+        if epsilon <= self.convergence_config.delta:
             return False
-        if self.iteration >= 1000:
-            if self.iteration == 1000:
-                SCF_logger.info("SCF procedure exceeded 1000 iterations: Started averaging the P matrix")
+        if self.convergence_config.averaging:
             self.P_new = (self.P_new + self.P)/2
-        if self.iteration == 5000:
-            SCF_logger.info("SCF procedure reached 5000 iterations: Iteration stopped")
+        if self.iteration == self.convergence_config.max_iteration:
+            SCF_logger.info(f"SCF procedure reached {self.iteration} iterations: Iteration stopped")
             return False
+        else:
+            return True

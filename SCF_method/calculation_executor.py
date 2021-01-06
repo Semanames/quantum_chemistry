@@ -1,17 +1,17 @@
 import json
 
-from SCF_method.basis.basis_mapping import BASIS_TYPE_MAPPING
+from SCF_method.calculation.basis.basis_mapping import BASIS_TYPE_MAPPING
+from SCF_method.calculation.convergence.convergence_config import ConvergenceConfig
+from SCF_method.calculation.integration.integrator_mapping import INTEGRATOR_TYPE_MAPPING
+from SCF_method.calculation.molecules.molecule import Molecule
 from SCF_method.calculation.procedure import SelfConsistentFieldProcedure
-from SCF_method.integration.integrator_mapping import INTEGRATOR_TYPE_MAPPING
 from SCF_method.logger import SCF_logger
-from SCF_method.molecules.molecule import Molecule
 
 
 class ExecutorSCF:
 
-    def __init__(self, input_file):
+    def __init__(self, input_dict: dict):
         SCF_logger.info("Preparing input data")
-        input_dict = json.load(input_file)
         SCF_logger.info("Initializing molecule")
         self.molecule = Molecule(**input_dict['molecule_definition'])
         SCF_logger.info("Initializing basis set")
@@ -27,13 +27,18 @@ class ExecutorSCF:
             boundaries=input_dict['integration_config']['boundaries'],
             dimensions=6
         )
+        if "convergence_config" in input_dict.keys():
+            self.convergence_config = ConvergenceConfig(**input_dict["convergence_config"])
+        else:
+            self.convergence_config = ConvergenceConfig()
 
     def run_calculation(self):
 
         SCF_procedure = SelfConsistentFieldProcedure(input_basis=self.basis,
                                                      input_molecule=self.molecule,
                                                      integrator_3D=self.integrator_3D,
-                                                     integrator_6D=self.integrator_6D)
+                                                     integrator_6D=self.integrator_6D,
+                                                     convergence_config=self.convergence_config)
 
         SCF_obj = SCF_procedure.calculate()
         SCF_logger.info("SCF procedure succesfull")
