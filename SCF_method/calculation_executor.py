@@ -1,6 +1,8 @@
 import json
+from typing import Dict
 
 from SCF_method.calculation.basis.basis_mapping import BASIS_TYPE_MAPPING
+from SCF_method.calculation.calculation_iterator import SelfConsistentFieldCalculation
 from SCF_method.calculation.convergence.convergence_config import ConvergenceConfig
 from SCF_method.calculation.integration.integrator_mapping import INTEGRATOR_TYPE_MAPPING
 from SCF_method.calculation.molecules.molecule import Molecule
@@ -9,8 +11,15 @@ from SCF_method.logger import SCF_logger
 
 
 class ExecutorSCF:
+    """
+    Executor is responsible for input data extraction to a custom objects
+    Also enables execution of SCF calculation
+    """
 
-    def __init__(self, input_dict: dict):
+    def __init__(self, input_dict: Dict):
+        """
+        :param input_dict: Dict: dictionary of transformed data from input json
+        """
         SCF_logger.info("Preparing input data")
         SCF_logger.info("Initializing molecule")
         self.molecule = Molecule(**input_dict['molecule_definition'])
@@ -32,7 +41,7 @@ class ExecutorSCF:
         else:
             self.convergence_config = ConvergenceConfig()
 
-    def run_calculation(self):
+    def run_calculation(self) -> SelfConsistentFieldCalculation:
 
         SCF_procedure = SelfConsistentFieldProcedure(input_basis=self.basis,
                                                      input_molecule=self.molecule,
