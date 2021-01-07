@@ -17,7 +17,7 @@
     "integration_config":
         {
             "type": "MC",
-            "n_samples": 200000000,
+            "n_samples": 50000000,
             "boundaries": [-7, 7]
         },
     "convergence_config":
